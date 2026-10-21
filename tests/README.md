@@ -17,6 +17,8 @@ All test source and JSON fixtures are intentionally zero-byte placeholders. No r
 | `fixtures/event-input.json` | Synthetic event brief after schema approval |
 | `fixtures/plan-output.json` | Synthetic valid plan after schema approval |
 
+The twelve concrete evaluation scenarios in [IMPLEMENTATION_BRIEF.md](../docs/IMPLEMENTATION_BRIEF.md) complement the cases below. They cover weddings, birthdays, community events, vendor-checklist accuracy, and multi-turn constraint preservation. None has been executed.
+
 ## Minimum acceptance cases once implemented
 
 - Invalid input never calls the provider.
@@ -26,6 +28,8 @@ All test source and JSON fixtures are intentionally zero-byte placeholders. No r
 - Timeouts, quota failures, and service failures return safe messages without leaking provider internals.
 - Double submission and retry behavior are bounded.
 - Labels, focus, keyboard submission, announced progress/errors, and responsive layouts work.
+- All three core occasions include relevant budgets, preparation timelines, itineraries, vendor checklists, and personalized ideas.
+- Vendor guidance never presents invented contacts, availability, prices, or bookings as confirmed facts.
 - An error preserves the event brief and allows a deliberate retry.
 
 Use mocked Gemini responses for routine checks. Fixtures must contain synthetic data and no credentials. Keep any live-provider check opt-in and disclose usage/cost; it is not required for the scaffold.

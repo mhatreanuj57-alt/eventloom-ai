@@ -8,7 +8,7 @@ Do not run an installer, formatter, framework generator, or code-generation tool
 
 ## Read before implementation
 
-1. Review the [architecture](ARCHITECTURE.md), [proposed API contract](API_CONTRACT.md), and [security policy](../SECURITY.md).
+1. Start with [tomorrow's implementation brief](IMPLEMENTATION_BRIEF.md), then review the [architecture](ARCHITECTURE.md), [proposed API contract](API_CONTRACT.md), and [security policy](../SECURITY.md). Verify the rules for PromptWars Virtual 2026 in the actual event dashboard.
 2. Confirm that the owner has authorized implementation.
 3. Agree on concrete limits, supported currencies/event types, model choice, and the current plan's lifecycle.
 4. Select and record compatible runtime and dependency versions.
@@ -45,7 +45,7 @@ Validate required environment settings. Implement the server-only Gemini client,
 
 ### 3. Planner experience
 
-Implement landing and planner pages, form controls, status messages, and result sections. Preserve input on failure. Support revisions using the current brief and plan in memory. Keep generated content readable and label estimates and assumptions.
+Implement landing and planner pages, form controls, status messages, and result sections for weddings, birthdays, and community events. Include budgets, preparation timelines, an event-day itinerary, vendor checklists, and personalized ideas. Preserve input on failure. Support revisions using the current brief and plan in memory. Keep generated content readable and label estimates and assumptions.
 
 ### 4. Meaningful checks
 
