@@ -1,6 +1,6 @@
 # Proposed API contract
 
-**Design only:** both route handlers are zero-byte placeholders. No endpoint currently accepts requests. Field names, limits, and response shapes must be finalized and tested during implementation.
+**Design only:** both route handlers are zero-byte placeholders. No endpoint currently accepts requests. Field names, limits, and response shapes must be finalized and tested during implementation. [Tomorrow's implementation brief](IMPLEMENTATION_BRIEF.md) proposes first-version constraints and an `effectiveEvent` response field; these remain design proposals.
 
 ## Shared conventions
 
@@ -42,6 +42,7 @@ A success envelope contains `data` and `requestId`. The plan in `data` contains:
 | `estimatedTotalMinor` | Checked sum of budget allocations |
 | `itinerary` | Local start/end times, time zone, and activities |
 | `checklist` | Practical preparation tasks and relative due dates |
+| `vendorChecklist` | Relevant vendor categories, questions/checks, and an unconfirmed state; no invented businesses or bookings |
 | `assumptions` | Missing details the model inferred |
 | `warnings` | Feasibility concerns, estimates, or items needing confirmation |
 
@@ -56,6 +57,8 @@ Placeholder: `src/app/api/plans/refine/route.ts`.
 The proposed request contains `event` (the original validated brief), `currentPlan` (the complete plan), and `instruction` (a bounded revision request). Do not trust a plan simply because a browser claims it was generated earlier.
 
 Return the same success envelope and plan shape as generation. Preserve unaffected constraints and explicitly communicate assumptions. If an instruction changes a budget or date, validate the effective updated brief and return it alongside the revised plan so the client can use it in later revisions. The exact updated-event field must be finalized in the shared types before implementation.
+
+The proposed first version in [IMPLEMENTATION_BRIEF.md](IMPLEMENTATION_BRIEF.md) limits free-text refinement to changes that preserve budget, currency, date, and guest count. Requests to change these fields should direct the user to the structured form and regeneration. If broader revision support is added later, the updated-brief validation rule above applies.
 
 This stateless design does not require accounts, ownership lookup, or a saved-plan endpoint.
 

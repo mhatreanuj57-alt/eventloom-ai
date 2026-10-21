@@ -4,7 +4,7 @@
 
 This document describes a planned single Next.js application with server-side Gemini integration. Every source file is empty. No diagram or contract here represents implemented behavior.
 
-The first useful version generates and refines an event plan. It does not need a separate backend service, database, authentication provider, payment system, vendor marketplace, or background worker.
+The first useful version generates and refines plans for weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas. It does not need a separate backend service, database, authentication provider, payment system, vendor marketplace, or background worker. [Tomorrow's implementation brief](IMPLEMENTATION_BRIEF.md) records proposed first-version decisions.
 
 ## Planned request path
 
@@ -42,7 +42,7 @@ Prefer Server Components for static composition. Add client boundaries only wher
 
 An event brief contains occasion, guest count, budget, currency, event date, local time zone, approximate location, preferences, and exclusions. Avoid collecting contact information, exact home addresses, or guest identities for the core flow.
 
-A plan contains a theme, budget allocation, timed activities, preparation tasks, assumptions, and warnings. Use one selected currency throughout and represent money as integer minor units when contracts are implemented. Validate allocations and totals with the currency's appropriate scale; do not assume every currency has two decimal places.
+A plan contains a theme, budget allocation, timed activities, preparation tasks, vendor-category checklists, assumptions, and warnings. Vendor guidance identifies checks and questions, never invented contacts, confirmed availability, or bookings. Use one selected currency throughout and represent money as integer minor units when contracts are implemented. Validate allocations and totals with the currency's appropriate scale; do not assume every currency has two decimal places.
 
 A revision includes the original brief and full current plan. Preserve constraints unless the user explicitly changes them. Validate any changed budget or date as carefully as the original input.
 
