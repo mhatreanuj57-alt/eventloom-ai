@@ -1,0 +1,25 @@
+# Local credentials; retain the intentionally empty example template.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Dependencies and framework output.
+node_modules/
+.next/
+out/
+dist/
+build/
+.vercel/
+# Tests, caches, and local logs.
+coverage/
+playwright-report/
+test-results/
+.turbo/
+*.tsbuildinfo
+*.log
+# Editor and operating-system files.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
