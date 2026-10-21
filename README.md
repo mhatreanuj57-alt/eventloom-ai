@@ -1,16 +1,16 @@
 # EventLoom AI
 
-GenAI-powered celebration and event planning for Hack2Skill PromptWars 2026.
+GenAI-powered celebration and event planning for **PromptWars Virtual 2026**, organized by Hack2Skill in collaboration with Google for Developers, as identified by the project owner.
 
 **Status: documentation and empty scaffold only.** No application, API, AI integration, executable tests, dependency installation, or deployment exists yet. Every source file, test fixture, environment template, and runtime configuration placeholder is intentionally zero bytes. Empty JSON files are not valid configuration; this project cannot be installed, built, or run in its present state.
 
-EventLoom AI is an independently proposed hackathon project. The event name identifies the intended submission context; eligibility, dates, judging criteria, and organizer affiliation have not been verified.
+EventLoom AI targets the owner-provided **Celebration & Event Planner** challenge: weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas. The owner supplied the [official event link](https://hack2skill.com/event/pwvirtual1) and [submission dashboard](https://hack2skill.com/event/pwvirtual1/dashboard/submissions). Deadlines, judging criteria, build-window rules, and submission requirements remain unverified. Do not borrow rules from another PromptWars edition.
 
 ## Project vision
 
 Help people turn an event brief into a practical celebration plan. The intended experience collects an occasion, guest count, budget, currency, location, date, and preferences, then uses Google Gemini to propose a theme, estimated budget, itinerary, and preparation checklist. Users should be able to refine the proposal without losing their original constraints.
 
-Examples include birthdays, anniversaries, family gatherings, and small community celebrations. Generated suggestions must respect cultural preferences, dietary needs, accessibility requirements, and explicit exclusions.
+The core occasions are weddings, birthdays, and community celebrations. Generated suggestions must respect cultural preferences, dietary needs, accessibility requirements, and explicit exclusions. Vendor checklists identify relevant categories and questions to ask without inventing businesses, prices, availability, or confirmed bookings.
 
 ## Planned core experience
 
@@ -18,8 +18,8 @@ Examples include birthdays, anniversaries, family gatherings, and small communit
 2. Describe the event and its constraints.
 3. Submit the brief to a server-side API route.
 4. Receive a validated plan with clearly labeled estimates and assumptions.
-5. Review the budget, schedule, and checklist.
-6. Request a revision, such as a lower budget or a different theme.
+5. Review the budget, preparation timeline, event-day schedule, and vendor checklist.
+6. Request a supported revision, such as a different theme; the proposed first version changes hard constraints through the structured event form.
 
 All capabilities above are planned. There are no live vendor quotes, bookings, payments, accounts, saved plans, or guarantees about local availability. The initial design keeps the current plan in browser memory and sends it with a revision request; it does not require a database.
 
@@ -64,6 +64,8 @@ Keep route handlers thin, prompts separate from transport concerns, and presenta
 
 Detailed boundaries are in [ARCHITECTURE.md](docs/ARCHITECTURE.md); proposed payloads and error behavior are in [API_CONTRACT.md](docs/API_CONTRACT.md).
 
+Start tomorrow with [IMPLEMENTATION_BRIEF.md](docs/IMPLEMENTATION_BRIEF.md): exact event context, proposed MVP decisions, screen flow, prompt drafts, twelve evaluation cases, and implementation order. These are plans, not implemented features or verified competition rules.
+
 ## Getting started with this scaffold
 
 Open this directory in your editor and read the architecture and development notes. Browsing and editing documentation requires no Node.js installation.
@@ -99,9 +101,9 @@ Security reports belong in a private channel described in [SECURITY.md](SECURITY
 
 ## Git and GitHub are manual
 
-No repository has been initialized or created, and no commits, remotes, or pushes have been performed for this project. A parent directory may already be under version control; initialize this project in its own directory before staging anything.
+The owner manually published the five initial commits to [eventloom-ai](https://github.com/mhatreanuj57-alt/eventloom-ai). Owner-provided terminal output showed a clean working tree with `main` and `origin/main` at `8cf7254` after publication. Later documentation preparation is local until the owner chooses to commit it.
 
-All initial Git/GitHub commands are organized into exactly **five sequential batches**, each with an explicit conventional commit and a separate push block, in [GIT_BATCHES.md](docs/GIT_BATCHES.md). Review and run them yourself. The guide publishes a public GitHub repository only when you choose to execute its commands.
+The original commands remain in **five sequential batches** in [GIT_BATCHES.md](docs/GIT_BATCHES.md) as a record of initial publication. Do not replay initialization or repository creation in the existing repository. All further Git operations remain manual.
 
 ## Hackathon preparation
 
