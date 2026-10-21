@@ -1,14 +1,20 @@
-# Hack2Skill PromptWars 2026 preparation
+# PromptWars Virtual 2026 preparation
 
 ## Submission status
 
-EventLoom AI is a proposed project for the event named by the owner. This scaffold does not verify organizer rules, eligibility, deadlines, required models, team size, deployment requirements, or judging criteria. Confirm these on the official event materials before relying on them.
+The owner identified **PromptWars Virtual 2026**, organized by Hack2Skill in collaboration with Google for Developers, and supplied the [official event page](https://hack2skill.com/event/pwvirtual1) and [submission dashboard](https://hack2skill.com/event/pwvirtual1/dashboard/submissions).
 
-There is no hosted demo, repository URL, working application, or submission yet. Do not present the folder structure as a completed GenAI product.
+The owner-provided challenge is **Celebration & Event Planner**: build a GenAI application for weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas. The owner reports receiving the announcement on 20 October 2026 from admin@no-reply.hack2skill.com; the email itself was not independently inspected.
+
+On 21 October 2026, the official public page exposed no readable requirements through the browsing tool and the submission dashboard could not be read. Deadlines, judging criteria, permitted build windows, treatment of pre-existing scaffolds, and submission requirements remain unverified. Check the actual dashboard; do not apply rules from another PromptWars edition.
+
+The owner manually published the initial scaffold to [eventloom-ai](https://github.com/mhatreanuj57-alt/eventloom-ai). Owner-provided terminal output showed main and origin/main at 8cf7254 with a clean working tree at that time. Later documentation preparation remains local until the owner chooses to commit it.
+
+There is no hosted demo, working application, executable test suite, or verified submission yet. Do not present the folder structure as a completed GenAI product. Start the next session with [IMPLEMENTATION_BRIEF.md](IMPLEMENTATION_BRIEF.md) for the proposed MVP, screen flow, prompt drafts, twelve evaluation cases, and implementation order.
 
 ## Proposed problem and value
 
-People organizing small celebrations often have a brief and a budget but no coherent plan. The proposed product turns those constraints into a theme, estimated budget, itinerary, and checklist, then revises the result through a clear request.
+People organizing celebrations often have a brief and a budget but no coherent plan. The proposed product covers weddings, birthdays, and community events with personalized ideas, an estimated budget, preparation tasks, an event-day itinerary, and vendor checklists, then supports revisions that preserve constraints.
 
 The demo should show useful constraint handling and transparent assumptions, with culturally respectful and accessible suggestions.
 
@@ -43,7 +49,7 @@ The empty `docs/screenshots/` folder is reserved for reviewed demonstration asse
 - Implement and test the actual application.
 - Review all public files and assets for secrets and personal data.
 - Establish private security and conduct reporting channels.
-- Execute the manual Git publication batches only when ready.
+- Preserve the completed initial publication history; review and publish later documentation changes manually when ready.
 - Confirm repository visibility and license are appropriate for submission.
 - Check that any deployed demo is reachable and has bounded API spending.
 - Complete required forms and supply accurate repository/demo links.
