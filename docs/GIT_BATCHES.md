@@ -1,8 +1,8 @@
 # Manual Git and GitHub publication: five sequential batches
 
-These commands are **instructions for the project owner only**. They have not been executed. No GitHub repository, project-level Git repository, commit, remote, or push was created by the scaffold.
+These commands record the **five initial publication batches**, which the owner subsequently completed manually. Owner-provided terminal output showed `main` and `origin/main` at `8cf7254` with a clean working tree at that time. Do not rerun initialization or repository creation in the existing repository. Later documentation changes are local follow-up work until the owner commits them.
 
-Run the five batches in order from PowerShell, line by line, and stop if a command fails. Inspect each staged diff before committing. Each batch has its own conventional commit and separate push instructions. These five commits publish structure and documentation only; they do not create working features.
+For a fresh unpublished copy only, the original instructions below run from PowerShell in order, line by line, stopping if a command fails. Each batch has a conventional commit and separate push instructions. The five commits publish structure and documentation only; they do not create working features. All Git operations remain the owner's responsibility.
 
 ## Before you start
 

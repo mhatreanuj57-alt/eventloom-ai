@@ -1,6 +1,6 @@
 # EventLoom AI file tree
 
-This inventory describes the scaffold as delivered, before any manual Git operations. Directory entries below exist on disk. All source, test, fixture, environment, runtime configuration, and marker files are **zero bytes**.
+This inventory describes project deliverables, including documentation preparation added after the owner manually published the initial scaffold. Version-control metadata is excluded. All source, test, fixture, environment, runtime configuration, and marker files are **zero bytes**.
 
 Only Markdown documents/templates, the MIT LICENSE, and .gitignore contain text. Descriptions beside source files explain future responsibilities; they are not implemented behavior.
 
@@ -22,7 +22,8 @@ EventLoom-AI/
 │   ├── ARCHITECTURE.md  # planned boundaries, request flow, and scaling
 │   ├── DEVELOPMENT.md  # future implementation order and tooling responsibilities
 │   ├── GIT_BATCHES.md  # five manual commit/push batches
-│   └── HACKATHON.md  # unverified-rule caveat and submission preparation
+│   ├── HACKATHON.md  # exact event context and submission preparation
+│   └── IMPLEMENTATION_BRIEF.md  # tomorrow's MVP, UX, prompts, evaluation, and task order
 ├── public/
 │   ├── icons/
 │   │   └── .gitkeep  # empty marker for future public icons
@@ -132,7 +133,7 @@ EventLoom-AI/
 
 ## Intentionally absent
 
-No project-level `.git/`, lockfile, installed dependencies, generated build output, real environment file, executable workflow, database schema, deployment configuration, or application implementation is included. Empty JSON files are placeholders rather than valid JSON data.
+No lockfile, installed dependencies, generated build output, real environment file, executable workflow, database schema, deployment configuration, or application implementation is included. Empty JSON files are placeholders rather than valid JSON data. The owner has since initialized and published the repository; `.git/` metadata is outside this inventory.
 
 There is no `tailwind.config.ts` because the planned setup uses Tailwind through PostCSS and CSS-first configuration. There are no barrel exports because there are no implementations to export.
 
@@ -140,4 +141,4 @@ There is no `tailwind.config.ts` because the planned setup uses Tailwind through
 
 When a later authorized change adds or removes a file, update this inventory and the affected architecture, test plan, and publication instructions. Do not populate empty source files just to make the tree appear functional.
 
-Initial publication paths are partitioned in [GIT_BATCHES.md](docs/GIT_BATCHES.md); each delivered file belongs to exactly one of its five batches.
+The five original publication batches are recorded in [GIT_BATCHES.md](docs/GIT_BATCHES.md). Subsequent documentation preparation is a local follow-up change and needs a separate owner-managed commit if it is to be published.
