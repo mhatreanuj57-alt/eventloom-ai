@@ -1,0 +1,17 @@
+{
+  "title": "A golden birthday",
+  "eventType": "birthday",
+  "guestCount": 30,
+  "budgetMinor": 1500000,
+  "currency": "INR",
+  "eventDate": "2080-01-23",
+  "timeZone": "Asia/Kolkata",
+  "location": "Pune, Maharashtra",
+  "preferences": [
+    "Vegetarian menu",
+    "Step-free access"
+  ],
+  "exclusions": [
+    "Alcohol"
+  ]
+}

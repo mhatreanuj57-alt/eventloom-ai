@@ -1,0 +1,91 @@
+{
+  "title": "A golden birthday",
+  "summary": "A relaxed vegetarian celebration with accessible activities and thoughtful details.",
+  "currency": "INR",
+  "budgetMinor": 1500000,
+  "estimatedTotalMinor": 1500000,
+  "theme": {
+    "name": "Golden hour",
+    "description": "Warm light and seasonal details.",
+    "palette": [
+      "#DBB361",
+      "#E9C3B3",
+      "#9AAB93"
+    ],
+    "ideas": [
+      "A handwritten welcome for every guest",
+      "A shared photo corner"
+    ]
+  },
+  "budgetItems": [
+    {
+      "id": "food",
+      "label": "Food & drinks",
+      "amountMinor": 600000,
+      "note": "Illustrative estimate; confirm a local quote."
+    },
+    {
+      "id": "venue",
+      "label": "Venue & setup",
+      "amountMinor": 500000,
+      "note": "Illustrative estimate; confirm accessibility."
+    },
+    {
+      "id": "decor",
+      "label": "Decor & activities",
+      "amountMinor": 250000,
+      "note": "Reusable details and inclusive activities."
+    },
+    {
+      "id": "buffer",
+      "label": "Contingency",
+      "amountMinor": 150000,
+      "note": "Reserved for changes."
+    }
+  ],
+  "itinerary": [
+    {
+      "id": "welcome",
+      "time": "16:00",
+      "durationMinutes": 30,
+      "title": "A warm welcome",
+      "description": "Welcome guests with an alcohol-free drink."
+    },
+    {
+      "id": "meal",
+      "time": "16:30",
+      "durationMinutes": 60,
+      "title": "Gather around the table",
+      "description": "A vegetarian meal with accessible seating."
+    }
+  ],
+  "checklist": [
+    {
+      "id": "venue-check",
+      "title": "Confirm venue accessibility",
+      "daysBefore": 30
+    },
+    {
+      "id": "menu-check",
+      "title": "Confirm vegetarian menu",
+      "daysBefore": 14
+    }
+  ],
+  "vendorChecklist": [
+    {
+      "id": "catering",
+      "category": "Food & catering",
+      "description": "Vegetarian, alcohol-free catering.",
+      "questions": [
+        "Is step-free serving available?",
+        "Does the quote include cleanup?"
+      ]
+    }
+  ],
+  "assumptions": [
+    "A provisional afternoon schedule."
+  ],
+  "warnings": [
+    "Synthetic test fixture, not a live quote or Gemini response."
+  ]
+}

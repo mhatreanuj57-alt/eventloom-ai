@@ -1,41 +1,33 @@
-# Planned verification
+# Verification
 
-All test source and JSON fixtures are intentionally zero-byte placeholders. No runner, assertions, mocks, dependencies, or executable checks exist yet. Do not report the test suite as passing.
+Run npm test for unit and route integration checks; run npm run build before npm run test:e2e -- --workers=2.
 
-## Placeholder responsibilities
+The browser suite uses Chromium desktop, Pixel 7 emulation, Firefox and WebKit. Installed browser engines are required:
 
-| Path | Intended check |
-| --- | --- |
-| `unit/event-input.test.ts` | Valid and invalid brief fields, dates, currencies, and limits |
-| `unit/plan-output.test.ts` | Output shape, budget arithmetic, scheduling, and constraints |
-| `unit/generate-plan.test.ts` | Prompt input and mocked provider success/failure |
-| `unit/refine-plan.test.ts` | Constraint preservation and explicit changed-constraint handling |
-| `integration/plans-route.test.ts` | Request validation, safe statuses, and mocked generation |
-| `integration/refine-route.test.ts` | Full revision boundary and malformed current plans |
-| `e2e/planner.spec.ts` | Form → results → refinement, keyboard use, and recovery |
-| `setup.ts` | Minimal shared runner setup when needed |
-| `fixtures/event-input.json` | Synthetic event brief after schema approval |
-| `fixtures/plan-output.json` | Synthetic valid plan after schema approval |
+```powershell
+npx playwright install chromium firefox webkit
+```
 
-The twelve concrete evaluation scenarios in [IMPLEMENTATION_BRIEF.md](../docs/IMPLEMENTATION_BRIEF.md) complement the cases below. They cover weddings, birthdays, community events, vendor-checklist accuracy, and multi-turn constraint preservation. None has been executed.
+## Coverage
 
-## Minimum acceptance cases once implemented
+- Input bounds, dates, time zones and minor-unit money.
+- Structured provider protocol, safe provider failures, JSON parsing and full route-to-provider validation for all three occasions.
+- Budget arithmetic/currency/identifiers and chronological, non-overlapping activities.
+- Account route authentication, ownership filters, version conflicts, invalid backups and atomic restore invocation.
+- Shared quota outcomes, failure-closed behavior and browser-facing origin checks.
+- Storage validation, duplicates, unsafe IDs, invalid progress references and write failure behavior.
+- Real PDF bytes/metadata/page structure, Unicode fonts, long text, drafts and unsupported-character fallback.
+- Browser drafts, editing, generation/refinement, persistence, spending, tasks, vendors, status, deletion, regeneration failures and backups.
+- Keyboard modal focus/arrow tabs, responsive overflow at 320/768/1024/1440 widths, and axe WCAG A/AA checks on core screens.
 
-- Invalid input never calls the provider.
-- Empty, malformed, or schema-invalid AI responses do not reach the UI as trusted plans.
-- Budget allocations add up using the selected currency scale and stay within the effective budget.
-- A revision preserves original constraints unless explicitly changed; later revisions receive the effective updated brief.
-- Timeouts, quota failures, and service failures return safe messages without leaking provider internals.
-- Double submission and retry behavior are bounded.
-- Labels, focus, keyboard submission, announced progress/errors, and responsive layouts work.
-- All three core occasions include relevant budgets, preparation timelines, itineraries, vendor checklists, and personalized ideas.
-- Vendor guidance never presents invented contacts, availability, prices, or bookings as confirmed facts.
-- An error preserves the event brief and allows a deliberate retry.
+Accessibility scans disable entrance animations using the application's reduced-motion mode, so transient opacity is not confused with the final text contrast. This does not replace a manual screen-reader audit. Browser engines and viewport emulation do not certify physical iOS/Android or hardware performance.
 
-Use mocked Gemini responses for routine checks. Fixtures must contain synthetic data and no credentials. Keep any live-provider check opt-in and disclose usage/cost; it is not required for the scaffold.
+Performance attachments contain measured local navigation/resource values; they are not production Core Web Vitals or a Lighthouse score.
 
-## Scaffold review now
+## Live checks
 
-Check that every non-documentation placeholder is zero bytes, all documented paths exist, and local documentation links resolve. Review the five manual publication batches for complete and non-overlapping staging paths.
+supabase/tests/private_events.sql tests owner isolation, anonymous denial, cross-owner writes, atomic restoration rollback and account quotas inside a rolled-back remote transaction.
 
-Build, type, lint, browser, and API checks cannot run meaningfully until configuration and implementation exist. No executable scaffold-verification script is included because source files must remain empty.
+scripts/verify-supabase.mjs tests actual account UI/API persistence using two disposable confirmed users, with no emails. It cleans them up afterward. With --gemini it deliberately consumes quota for real generation/refinement. See docs/DEVELOPMENT.md.
+
+Detailed executed results and remaining limits are recorded in [docs/VERIFICATION.md](../docs/VERIFICATION.md). Do not claim mock responses prove live Gemini availability.

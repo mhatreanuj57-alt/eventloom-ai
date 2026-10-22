@@ -1,19 +1,20 @@
 ## Problem and outcome
 
-Explain the concrete issue and what this change achieves.
+Describe the user problem, resulting behavior, and linked issue.
 
 ## Scope
 
-List the affected paths and link the agreed issue. Is this documentation-only, or has implementation been authorized?
+List affected routes, components, contracts, and documentation. Note migrations or data-loss implications.
 
 ## Validation
 
-Describe checks actually performed and their results. Identify skipped checks and why. For scaffold-only changes, confirm that source, test, fixture, environment, and runtime-configuration placeholders remain zero bytes.
+Record lint/type/build/test results relevant to the change. Distinguish mocked API responses from live Gemini calls and viewport emulation from physical-device checks.
 
-## Review notes
+## Review
 
-- [ ] Scope is agreed and unrelated changes are excluded.
-- [ ] Documentation and file tree match the change.
-- [ ] No credentials, personal data, or unlicensed assets are included.
-- [ ] Accessibility and security boundaries are preserved where applicable.
-- [ ] Planned behavior is distinguished from implemented behavior.
+- [ ] Related callers, validators, types, fixtures, and docs are updated.
+- [ ] No secrets or private event data are included.
+- [ ] Existing local data and user progress are protected.
+- [ ] Keyboard access, focus, themes, reduced motion, and mobile layouts are considered.
+- [ ] Sample content and estimates remain honestly labeled.
+- [ ] Third-party notices and file inventory reflect new assets/files.

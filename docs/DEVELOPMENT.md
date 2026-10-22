@@ -1,62 +1,60 @@
-# Development roadmap
+# Development
 
-## This phase: scaffold only
+Use Node.js 24 LTS and npm ci. Copy .env.example only when .env.local does not exist. Never print credentials in a test report.
 
-The project deliberately has no implementation. All runtime/configuration files, environment templates, source, tests, and JSON fixtures are zero bytes. The only populated files are documentation, the MIT license, and repository ignore rules.
+## Commands
 
-Do not run an installer, formatter, framework generator, or code-generation tool over these placeholders during this phase. Such tools can populate files and violate the requested boundary. Empty JSON files are not valid documents, and empty test files do not constitute tests.
+```powershell
+npm run dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npx playwright install chromium firefox webkit
+npm run test:e2e -- --workers=2
+```
 
-## Read before implementation
+Development uses 127.0.0.1:3000; Playwright uses the production build on 127.0.0.1:3100. Stop a running production server before rebuilding. Do not run a build concurrently with dev/browser tests.
 
-1. Start with [tomorrow's implementation brief](IMPLEMENTATION_BRIEF.md), then review the [architecture](ARCHITECTURE.md), [proposed API contract](API_CONTRACT.md), and [security policy](../SECURITY.md). Verify the rules for PromptWars Virtual 2026 in the actual event dashboard.
-2. Confirm that the owner has authorized implementation.
-3. Agree on concrete limits, supported currencies/event types, model choice, and the current plan's lifecycle.
-4. Select and record compatible runtime and dependency versions.
-5. Implement one vertical path before expanding scope.
+## Supabase
 
-## Planned tooling responsibilities
+The owner-authorized remote project is tqofweotswghcjrakgqf. It was created separately; other existing projects were not modified. Migrations are already applied there. Other contributors should create a separate development project and use its public URL/publishable key.
 
-| Placeholder | Future responsibility |
-| --- | --- |
-| `package.json` | Package name `eventloom-ai`, dependencies, scripts, runtime requirements |
-| `tsconfig.json` | Strict TypeScript settings and the `@/*` → `src/*` alias |
-| `next-env.d.ts` | Framework-generated type declarations after tooling setup |
-| `next.config.ts` | Only required Next.js settings |
-| `postcss.config.mjs` | Tailwind PostCSS integration |
-| `eslint.config.mjs` | Compatible lint rules for the chosen framework/toolchain |
-| `vitest.config.ts`, `tests/setup.ts` | Unit/integration environment and shared test setup |
-| `playwright.config.ts` | Browser-test environment and application startup |
-| `.env.example` | Documented names with safe placeholder values after implementation begins |
-| `.github/workflows/.gitkeep` | Directory marker only; no executable CI configuration |
+```powershell
+supabase login
+supabase link --project-ref tqofweotswghcjrakgqf
+supabase migration list
+supabase db push --dry-run
+supabase db query --linked --file supabase/tests/private_events.sql
+```
 
-Follow [Next.js installation guidance](https://nextjs.org/docs/app/getting-started/installation) for the selected supported release, and verify its runtime requirements at implementation time. Choose a compatible set of Next.js, React, TypeScript, Tailwind, PostCSS, ESLint, Google Gen AI SDK, Vitest, and Playwright versions rather than assuming an empty manifest already specifies them.
+Review migrations before manually running supabase db push. Never run a remote database reset. CLI migration application can warn about unavailable Docker while its optional catalog cache fails; confirm migration history and SQL state instead of assuming the migration failed.
 
-The future owner should define development, production build/start, lint, type-check, unit/integration, and browser-test commands in the package manifest. No package scripts exist now, so this document does not present them as runnable setup instructions.
+The rollback-only SQL test creates synthetic users inside a transaction, tests RLS, quota and restore behavior, and rolls everything back.
 
-## Suggested implementation order
+## Live account check
 
-### 1. Tooling and domain contracts
+Build and start the application in one terminal:
 
-Populate the manifest and minimal configuration only after authorization. Install selected dependencies and generate a genuine lockfile. Define event, plan, API, and runtime validation contracts together. Document actual field limits and the chosen currency representation.
+```powershell
+npm run build
+npm run start -- --port 3100
+```
 
-### 2. Server boundary
+In another:
 
-Validate required environment settings. Implement the server-only Gemini client, bounded generation, prompt modules, and independent output validation. Add generation and refinement routes with stable, safe errors. Include request-size limits, abuse controls, and provider spending limits before opening public access.
+```powershell
+node scripts/verify-supabase.mjs tqofweotswghcjrakgqf
+```
 
-### 3. Planner experience
+The check obtains an admin credential through the logged-in CLI only in process memory, creates two confirmed disposable accounts without sending email, tests UI sign-in/account isolation/cloud persistence/conflicts/sign-out, and deletes those test users in finally. Admin credentials are never part of app configuration or saved output.
 
-Implement landing and planner pages, form controls, status messages, and result sections for weddings, birthdays, and community events. Include budgets, preparation timelines, an event-day itinerary, vendor checklists, and personalized ideas. Preserve input on failure. Support revisions using the current brief and plan in memory. Keep generated content readable and label estimates and assumptions.
+Add --gemini deliberately to perform three real generations and one refinement. This consumes provider quota and may cost money. The ordinary unit/browser suite mocks Gemini and sends no private briefs.
 
-### 4. Meaningful checks
+## Recovery and scope
 
-Populate synthetic fixtures and implement the cases described in [tests/README.md](../tests/README.md). Keep routine checks independent of paid live API calls. Verify keyboard access, responsive layout, and failure recovery.
+The pre-completion source snapshot is C:\Users\ADMIN\eventloom-backups\20261022-completion; it excludes credentials. Restore selected files manually only after checking current work.
 
-### 5. Release preparation
+Do not overwrite unreadable browser data. Export it first. Backup restore and reset replace the selected local/account workspace only after confirmation. Concurrent cloud edits return a conflict; reload and review before saving.
 
-Create actual CI workflow files only after local checks exist. Configure private reporting channels, review provider data handling, document deployed versions and limitations, and complete the hackathon checklist. Publish or deploy only when the owner authorizes that action.
-
-## Deliberate exclusions
-
-No database, authentication, booking/payment flow, vector store, agent framework, provider abstraction, monorepo, Docker setup, or infrastructure configuration is included. Add one only in response to an agreed requirement. The initial design needs a single application and one AI provider.
-
-Git and GitHub publication are handled manually through [GIT_BATCHES.md](GIT_BATCHES.md); this roadmap does not execute those steps.
+Use existing types, schemas and UI primitives. Keep server/private and client/public environment boundaries intact. Follow root AGENTS.md and the version-matched Next.js documentation under node_modules/next/dist/docs.

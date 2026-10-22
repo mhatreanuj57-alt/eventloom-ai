@@ -24,4 +24,4 @@ Attach safe excerpts or screenshots with secrets and personal data removed.
 
 ## Scope note
 
-All application and test files are currently empty by design. Report security vulnerabilities privately using SECURITY.md rather than this template.
+The app is implemented. Specify whether you used samples, mocked responses, or live Gemini. Report vulnerabilities privately using SECURITY.md rather than this template.

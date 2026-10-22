@@ -1,5 +1,7 @@
 # Tomorrow's implementation brief
 
+> Historical planning snapshot from 21 October 2026. Implementation was authorized on 22 October; current behavior and limits are in [README](../README.md), [architecture](ARCHITECTURE.md), and the [API contract](API_CONTRACT.md). Earlier scaffold-only restrictions below describe that past phase.
+
 Prepared on 21 October 2026. **Documentation only: no implementation is authorized by this brief.** Source, tests, fixtures, and runtime configuration remain empty. The owner plans to begin coding in the next session.
 
 ## 1. Event and evidence

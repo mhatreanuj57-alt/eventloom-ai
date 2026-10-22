@@ -10,7 +10,7 @@ On 21 October 2026, the official public page exposed no readable requirements th
 
 The owner manually published the initial scaffold to [eventloom-ai](https://github.com/mhatreanuj57-alt/eventloom-ai). Owner-provided terminal output showed main and origin/main at 8cf7254 with a clean working tree at that time. Later documentation preparation remains local until the owner chooses to commit it.
 
-There is no hosted demo, working application, executable test suite, or verified submission yet. Do not present the folder structure as a completed GenAI product. Start the next session with [IMPLEMENTATION_BRIEF.md](IMPLEMENTATION_BRIEF.md) for the proposed MVP, screen flow, prompt drafts, twelve evaluation cases, and implementation order.
+The application and executable checks are implemented locally. No public deployment or verified competition submission has been performed. See [README](../README.md) for current behavior and [tests](../tests/README.md) for coverage limits. The [implementation brief](IMPLEMENTATION_BRIEF.md) remains historical planning context.
 
 ## Proposed problem and value
 
@@ -23,7 +23,7 @@ The demo should show useful constraint handling and transparent assumptions, wit
 1. Enter a synthetic celebration brief with an explicit guest count, currency, budget, and exclusions.
 2. Generate a complete plan and review its assumptions.
 3. Show how the budget total relates to the original constraint.
-4. Ask for a lower-cost or accessibility-focused revision.
+4. Ask for an accessibility-focused creative revision; use the structured editor to change the budget.
 5. Demonstrate preserved constraints and a recoverable failure state.
 
 Use synthetic names and locations. Never show credentials, personal guest information, or an exposed environment file on screen.
@@ -41,7 +41,7 @@ Use synthetic names and locations. Never show credentials, personal guest inform
 - Limitations, privacy notes, and realistic cost/availability caveats.
 - Third-party assets, licenses, and any required AI-use disclosures.
 
-The empty `docs/screenshots/` folder is reserved for reviewed demonstration assets; no sample screenshots are included.
+Follow [screenshots guidance](SCREENSHOTS.md), use [the submission copy draft](SUBMISSION.md), and report observed checks from [VERIFICATION.md](VERIFICATION.md). The app now includes Supabase account storage, PDF download, editable spending and validated backup recovery. Repository publication and Vercel deployment remain owner actions.
 
 ## Owner checklist before submission
 

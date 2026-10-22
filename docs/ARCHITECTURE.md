@@ -1,73 +1,55 @@
-# Architecture blueprint
+# Architecture
 
-## Scope and status
+## Boundaries
 
-This document describes a planned single Next.js application with server-side Gemini integration. Every source file is empty. No diagram or contract here represents implemented behavior.
+One existing Next.js App Router application provides Server Component pages and interactive Client Components. The studio route group preserves public URLs. Tailwind/CSS tokens, local fonts, Radix-based shadcn components, and Lucide share the warm editorial design.
 
-The first useful version generates and refines plans for weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas. It does not need a separate backend service, database, authentication provider, payment system, vendor marketplace, or background worker. [Tomorrow's implementation brief](IMPLEMENTATION_BRIEF.md) records proposed first-version decisions.
+- src/components/auth/account-provider.tsx tracks browser session identity and account event state.
+- src/hooks/use-events.ts chooses private cloud storage for signed-in users or the existing local store for guests.
+- src/lib/supabase contains cookie-aware browser/server clients; src/proxy.ts refreshes sessions.
+- src/app/api/events verifies users independently with getUser and performs all application cloud writes.
+- src/services/ai and src/lib/env.ts are server-only.
+- src/lib/validation owns runtime contracts; src/types owns TypeScript contracts.
+- src/lib/event-report.ts builds shared report content; pdf-report.ts is dynamically imported on download.
 
-## Planned request path
+## Planning path
 
-1. The planner form gathers a structured event brief.
-2. A browser hook manages idle, submitting, success, and recoverable error states.
-3. A Next.js POST route checks the request boundary and invokes input validation.
-4. An AI service combines validated input with a versioned prompt design.
-5. A server-only Gemini client makes a bounded provider request.
-6. Output validation checks the response's shape and domain constraints.
-7. The route returns a project-owned plan contract.
-8. Presentation components render the budget, itinerary, checklist, and assumptions.
+Form → runtime validation → same-origin POST → verified Supabase user → future-date/input checks → atomic PostgreSQL quota reservation → Gemini SDK → structured JSON → independent budget/timeline checks → safe envelope → client checks → confirmed save.
 
-Refinement follows the same path with the original brief, current plan, and requested change. It must not depend on an unimplemented server-side plan store.
+Gemini receives only the brief/current plan and the refinement instruction, never account passwords or server keys. No model tools, bookings, arbitrary code execution, or unchecked HTML are supported. SDK retries are disabled. Invalid responses fail explicitly and leave the old plan intact; drafts remain available.
 
-## Ownership by directory
+Refinement keeps hard constraints fixed. Change budget, occasion, guests, location, date or preferences through the editor and regenerate. Semantic compliance with every preference still needs review.
 
-| Location | Responsibility | Boundary |
-| --- | --- | --- |
-| `src/app/` | Pages, root layout, CSS, loading and error UI | Framework routing and composition |
-| `src/app/api/` | Request parsing, response statuses, service invocation | External HTTP input |
-| `src/components/` | Controls, layout, plan presentation | No SDK or credential access |
-| `src/hooks/` | Planner request lifecycle | Calls local routes only |
-| `src/services/ai/` | Provider access and generation/refinement behavior | Server only |
-| `src/services/ai/prompts/` | Prompt responsibilities and constraints | No credentials or private examples |
-| `src/lib/validation/` | Runtime input and model-output validation | Treat both as untrusted |
-| `src/lib/env.ts` | Required server environment validation | No browser imports |
-| `src/config/ai.ts` | Selected model and bounded generation settings | Server only |
-| `src/config/site.ts`, `event-types.ts` | Public metadata and supported occasions | Safe for shared consumption |
-| `src/types/` | Provider-independent event, plan, and API types | Types are not runtime checks |
-| `tests/` | Synthetic cases and future executable checks | No production secrets |
+## Persistence
 
-Prefer Server Components for static composition. Add client boundaries only where interaction requires them. Future implementation should enforce server-only imports around environment and AI modules rather than relying solely on this document.
+public.events uses a composite (user_id, id) primary key, a JSON payload matching SavedEvent, and a database-controlled updated_at version. Ownership references auth.users with deletion cascading to events.
 
-## Domain design
+RLS separately grants authenticated owners select/insert/update/delete on their rows. Anonymous table access is revoked. The server derives user_id from a verified session, never from a client-supplied owner. No service-role credential is needed by the application.
 
-An event brief contains occasion, guest count, budget, currency, event date, local time zone, approximate location, preferences, and exclusions. Avoid collecting contact information, exact home addresses, or guest identities for the core flow.
+Cloud mutations wait for a successful response before updating state. Updates/deletions compare the previous database timestamp and return 409 on conflicts. Refresh reloads the latest workspace; stale edits require explicit reconciliation. Simultaneous modifications are not automatically merged.
 
-A plan contains a theme, budget allocation, timed activities, preparation tasks, vendor-category checklists, assumptions, and warnings. Vendor guidance identifies checks and questions, never invented contacts, confirmed availability, or bookings. Use one selected currency throughout and represent money as integer minor units when contracts are implemented. Validate allocations and totals with the currency's appropriate scale; do not assume every currency has two decimal places.
+replace_event_workspace runs with invoker permissions in one database transaction; invalid restoration rolls back prior deletion. A trigger enforces 50 events per account. API/runtime validation rejects malformed plans and invalid tracking references.
 
-A revision includes the original brief and full current plan. Preserve constraints unless the user explicitly changes them. Validate any changed budget or date as carefully as the original input.
+Guest data stays in localStorage under eventloom.events.v1. Stable snapshots support hydration and cross-tab notifications. Corrupt data remains recoverable; storage exceptions never announce successful writes. The first personal guest event removes the initial illustrative samples.
 
-## Prompt design
+Account identity changes clear in-memory cloud data. Local backups are not uploaded automatically. Export/restore deliberately moves data between guest and account modes. No guest-to-account auto-merge, offline cloud queue, realtime collaboration, or conflict auto-merge is promised.
 
-- `system.ts`: planner role, safety boundaries, inclusion, estimates, and output requirements.
-- `generate-plan.ts`: transform a validated brief into a first proposal.
-- `refine-plan.ts`: apply a specific revision while preserving untouched constraints.
+## Shared quotas
 
-Use provider-supported structured responses where appropriate, then validate independently. Keep model-specific transport details in the Gemini client. Schema compliance does not prove that prices, availability, or cultural suggestions are correct.
+reserve_ai_request is a tightly scoped SECURITY DEFINER function with an empty search path, explicit qualified table names, and execution limited to authenticated users. It uses auth.uid, an advisory transaction lock, and hourly quota rows hidden from client reads/writes.
 
-## Failure behavior
+The ceiling is 5 reservations per account and 20 studio-wide per UTC hour, across Vercel instances and restarts. Failed generation attempts consume a reservation. Old quota rows are pruned. Development without Supabase retains a process-local quota; production without the shared store fails closed.
 
-Reject invalid input before provider calls. Distinguish validation failures, quota limits, provider outages, timeouts, malformed output, and internal failures using the API contract. Preserve entered form values on failures.
+## Validation and money
 
-Avoid indefinite retries, automatic duplicate submissions, and unbounded token budgets. Do not return provider stack traces or credentials. Log only minimal operational metadata with no raw event content by default.
+Inputs use safe integer minor units for INR/USD/EUR/GBP; decimal forms allow two fractional digits. Plan allocations sum exactly, match the brief currency/budget, and stay under the budget cap. Actual spending may exceed the cap and displays the excess.
 
-## Scaling path
+Identifiers are unique; progress keys must belong to the plan. Timelines use valid 24-hour times and cannot overlap or extend beyond one calendar day. Archive data may use past dates; new AI generation requires today/future in the event zone.
 
-The initial stateless request/response design can be deployed as one application. Before public use, configure server secrets, bounded request handling, shared abuse controls, and provider spending limits.
+## Reports and failure recovery
 
-Only add durable storage if saved plans are required. Only introduce jobs if response times require asynchronous work. Such additions would also require access control, retention/deletion decisions, failure recovery, and corresponding tests. They are not hidden dependencies of this scaffold.
+PDF content includes the brief/source, theme, allocations, actuals, timeline, task progress, vendor questions/status, assumptions, warnings, and estimate disclaimer. Local fonts are embedded; long text wraps and paginates. Unsupported glyphs fail with a readable/printable HTML fallback instead of dropping user text.
 
-## Accessibility and privacy
+PDFs are searchable text but not certified tagged PDFs. Semantic HTML is the accessible reading path. JSON backups preserve the actual event structure for restoration.
 
-Use native semantics, explicit labels, keyboard access, visible focus, announced status/error messages, and responsive layouts. Do not use color alone to communicate budget warnings.
-
-Tell users when brief data is sent to an AI provider and obtain any required consent before submission. Display estimates and assumptions, support review before action, and avoid promises of bookings or guaranteed costs.
+Planning, storage, auth and report failures have bounded requests and visible messages. Failed Gemini generation never masquerades as a sample. Regeneration clears trackers only after confirmation and successful validated replacement.

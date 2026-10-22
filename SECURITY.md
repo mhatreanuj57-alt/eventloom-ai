@@ -1,54 +1,53 @@
-# Security Policy
+# Security policy
 
-## Current status and supported scope
+## Supported scope and reporting
 
-EventLoom AI currently contains documentation and empty placeholders only. There is no running application, configured Gemini integration, published release, or executable security control. No version is claimed to receive security updates yet.
+EventLoom is implemented and locally verified; no public deployment or security certification is claimed. There is no staffed response SLA.
 
-This policy covers future project-owned application code, API routes, configuration, prompts, and documentation. Vulnerabilities in Google, GitHub, Next.js, or other third-party services should also be reported through their own disclosure channels.
+Report privately through GitHub Security → Advisories → Report a vulnerability if enabled for the existing repository. If unavailable, request a private channel without publishing exploit details or credentials. No verified security mailbox or bounty promise has been established.
 
-## Report a vulnerability privately
+Use synthetic reproductions. Do not access other users' records, send unwanted email, disrupt services, or trigger unnecessary paid AI calls.
 
-Do not open a public issue containing exploit instructions, secrets, personal data, or private event details.
+## Implemented controls
 
-After the owner creates a GitHub repository, use **Security → Advisories → Report a vulnerability** if private vulnerability reporting is enabled. It is not enabled by this scaffold. The owner must enable it or publish a verified private security contact before a public application launch.
+- Gemini credentials and calls stay in server-only modules; responses never contain credentials or raw provider errors.
+- Supabase cookie sessions are independently checked with getUser on protected APIs. Proxy refresh is not the sole authorization boundary.
+- Event ownership comes from the verified user. RLS enforces owner-only select/insert/update/delete and denies anonymous table access.
+- The application uses a publishable key with user-session authorization; no service-role key is deployed.
+- Account mutations require a matching browser-facing Origin, with Host/forwarded protocol supporting Next/Vercel.
+- Streamed body caps apply without trusting Content-Length: 64 KiB planning, 100 KB individual event save, 4 MB restoration.
+- Zod validates input/output, money, schedules, item identifiers, unique events and progress references.
+- Database versions prevent stale API updates/deletions. Account restore/reset is transactional.
+- PostgreSQL atomically reserves 5 AI attempts per account and 20 per studio per UTC hour. Quota tables are hidden from client writes/reads; failure closes generation.
+- Quota RPC has a fixed search path, qualified tables and authenticated-only execute grants.
+- Provider, database, auth, browser and font requests have timeouts; SDK retries are disabled.
+- Destructive UI operations disclose consequences and require confirmation. Invalid backups and unreadable guest data are not silently discarded.
+- PDF creation is local. Backups/reports contain event data, never server credentials or account passwords.
 
-If neither private route is available, ask the owner to establish one without sharing sensitive details publicly. There is currently no verified project security email address.
+These controls cannot guarantee semantic AI accuracy. User/model strings are rendered as text; no generated HTML/code is executed and the model has no application tools.
 
-Useful report details include:
+## Credentials and privacy
 
-- The affected version, file, route, or documentation section.
-- The expected security boundary and how it can be crossed.
-- Minimal reproduction steps using synthetic data.
-- The impact and any prerequisites.
-- Suggested mitigation, if known.
-- A safe reply channel and disclosure preferences.
+Only NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY belong in the public bundle. Never use NEXT_PUBLIC_ for Gemini, database passwords, access tokens or a service-role/secret Supabase key.
 
-Remove real credentials and personal information from evidence. Avoid accessing other people's data, disrupting services, or making unnecessary paid API requests.
+.env.local and Supabase temporary metadata are ignored. The database password generated for the owner-authorized project is stored only in that local file for CLI administration. It is not needed in Vercel application settings.
 
-## Response and disclosure
+The separate live verification script temporarily obtains an admin key through the CLI in memory, creates/deletes synthetic users, and does not write it to disk or send emails. It is not an application route.
 
-Maintainers should acknowledge a private report, assess impact, agree on a disclosure plan, and provide a fix or mitigation when possible. There is no staffed response team or guaranteed service level at this stage.
+Rotate the Gemini key previously exposed in chat before public use, inspect provider usage, and revoke exposed copies. Removing a value from a file does not revoke it.
 
-A future advisory should identify affected releases, available mitigations, and fixed versions. Credit reporters only with their permission. No bounty or legal safe-harbor commitment is offered by this policy.
+Signed-in events are stored remotely in Supabase and sent to Gemini when generation/refinement is requested. Guest events remain unencrypted browser localStorage data. Backups and PDFs may contain private event details; users must protect downloaded files. No automatic guest upload occurs.
 
-## Secret handling requirements for implementation
+## Before launch
 
-- Keep `GEMINI_API_KEY` on the server; never expose it through `NEXT_PUBLIC_`, client imports, source maps, logs, or error responses.
-- Store local credentials only in ignored local environment files. Keep `.env.example` free of real values.
-- Restrict provider credentials and access according to the provider's supported controls.
-- If a key is exposed, revoke or rotate it promptly, inspect usage, and remove it from all affected surfaces, including repository history where necessary. Deleting the current file alone does not revoke the key.
-- Use synthetic events in fixtures, demonstrations, issues, and screenshots.
+Configure Supabase email confirmation, SMTP, strong-password settings and exact allowed redirects. Review signup rate limits/CAPTCHA, Google quota/spending settings, deployment logs/monitoring, backup/retention processes and account-deletion support. Account deletion currently requires the operator/provider; there is no self-service deletion UI.
 
-The included `.gitignore` reduces accidental staging of common local files. It cannot detect a secret pasted into an otherwise tracked file and is not a substitute for review.
+Use a separate database for untrusted preview code. Secure both the hosting and Supabase administration accounts. Origin checks supplement authentication; non-browser clients can forge Origin, so it never replaces verified identity or RLS.
 
-## Application controls to implement
+A readable HTML report is provided for accessibility; PDF output is not certified PDF/UA. Unicode outside the embedded fonts requires the browser print alternative.
 
-Validate input types, lengths, dates, guest counts, budgets, currency, and revision payloads before calling Gemini. Validate model responses independently before returning them. Bound request sizes, token usage, timeouts, retries, and per-user or per-client quotas.
+## Dependency audit — 22 October 2026
 
-Treat prompts and model output as untrusted data. Keep user instructions separate from system policy; do not execute generated code, render unchecked HTML, follow arbitrary generated URLs on the server, or give the model tool access by default.
+The executed production audit reports zero advisories. The full dependency audit still reports five high-severity entries in one development-only lint chain: eslint-config-next → @next/eslint-plugin-next → fast-glob → micromatch → braces.
 
-Review origin handling and abuse protection for public routes. A multi-instance release needs shared rate limits and spending controls. Client-only limits and a process-local counter are insufficient as public abuse defenses.
-
-Do not log full event briefs or provider responses by default. Explain what data is sent to Google and review applicable provider data terms before launch. If persistence is later added, define retention, authorization, deletion, backups, and recovery before storing user information.
-
-None of these controls is implemented in the current scaffold.
+The [braces advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) had no patched release at the previous review. Avoid untrusted lint glob inputs and monitor upstream. The proposed forced fix downgrades framework lint tooling incompatibly and was not applied. This is a disclosed residual tooling risk, not a clean full audit.
