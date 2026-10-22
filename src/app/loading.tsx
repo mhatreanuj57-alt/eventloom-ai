@@ -1,0 +1,1 @@
+export default function Loading() { return <main id="main-content" className="page-loading" aria-busy="true"><span className="loading-flower">✳</span><p>Making a little room for you…</p><div className="skeleton" /></main>; }
